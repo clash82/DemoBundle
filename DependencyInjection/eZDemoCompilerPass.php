@@ -15,20 +15,20 @@ class eZDemoCompilerPass implements CompilerPassInterface
 
     private function addPrivacyCookieBanner()
     {
-        if ($this->container->hasDefinition('ez_privacy_cookie.twig.extension') === false) {
+        if ( $this->container->hasDefinition( 'ez_privacy_cookie.twig.extension' ) === false ) {
             return;
         }
 
-        if ($this->container->hasDefinition('ezdemo.ez_content_banner_factory') === false) {
+        if ( $this->container->hasDefinition( 'ezdemo.ez_content_banner_factory' ) === false ) {
             return;
         }
 
-        $definition = $this->container->getDefinition('ez_privacy_cookie.twig.extension');
-        $eZBannerFactory = $this->container->getDefinition('ezdemo.ez_content_banner_factory');
-        $definition->replaceArgument(2, $eZBannerFactory);
+        $definition = $this->container->getDefinition( 'ez_privacy_cookie.twig.extension' );
+        $eZBannerFactory = $this->container->getDefinition( 'ezdemo.ez_content_banner_factory' );
+        $definition->replaceArgument( 2, $eZBannerFactory );
     }
 
-    public function process(ContainerBuilder $container)
+    public function process( ContainerBuilder $container )
     {
         $this->container = $container;
 

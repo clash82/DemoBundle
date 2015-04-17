@@ -18,9 +18,9 @@ class PathConverter
      * @param string $pathString
      * @return int
      */
-    public static function getContentId(URLAliasService $urlAliasService, LocationService $locationService, $pathString)
+    public static function getContentId( URLAliasService $urlAliasService, LocationService $locationService, $pathString )
     {
-        $alias = $urlAliasService->lookup($pathString);
-        return $locationService->loadLocation($alias->destination)->contentId;
+        $alias = $urlAliasService->lookup( $pathString );
+        return $locationService->loadLocation( $alias->destination )->contentId;
     }
 }

@@ -19,15 +19,15 @@ use Symfony\Component\Translation\Translator;
  */
 class DemoBundleBanner implements DemoBundleBannerFactory
 {
-    public static function build(Content $bannerContent, LocationService $locationService, URLAliasService $urlAliasService, Translator $translator)
+    public static function build( Content $bannerContent, LocationService $locationService, URLAliasService $urlAliasService, Translator $translator )
     {
         $banner = new Banner();
 
-        $banner->caption = $bannerContent->getFieldValue('description')->xml->textContent;
+        $banner->caption = $bannerContent->getFieldValue( 'description' )->xml->textContent;
         $banner->policyPageUrl =  $urlAliasService->reverseLookup(
-            $locationService->loadLocation($bannerContent->contentInfo->mainLocationId)
+            $locationService->loadLocation( $bannerContent->contentInfo->mainLocationId )
         )->path;
-        $banner->learnMoreText = $translator->trans('Learn more');
+        $banner->learnMoreText = $translator->trans( 'Learn more' );
         $banner->cookieName = "eZDemoPrivacyCookie";
         $banner->cookieValidity = 365;
 
