@@ -11,8 +11,10 @@ namespace EzSystems\DemoBundle\Helper;
 
 use eZ\Publish\API\Repository\SearchService;
 use eZ\Publish\API\Repository\Values\Content\Location;
+use eZ\Publish\API\Repository\Values\Content\Content;
 use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion;
+use eZ\Publish\Core\Repository\ContentService;
 
 /**
  * Helper for places
@@ -80,6 +82,45 @@ class PlaceHelper
         $searchResults = $this->searchService->findContent( $query );
 
         return $this->searchHelper->buildListFromSearchResult( $searchResults );
+    }
+
+    /**
+     * Retrieve all objects related to place $content.
+     *
+     * @param \eZ\Publish\Core\Repository\ContentService $contentService
+     * @param \eZ\Publish\API\Repository\Values\Content\Content $content
+     * @return array
+     */
+    public function getRelatedObjects( ContentService $contentService, Content $content )
+    {
+        $relatedObjects = array();
+
+        $relations = $contentService->loadRelations( $content->versionInfo );
+        foreach ( $relations as $rel )
+        {
+            $relatedObjects[] = $contentService->loadContent( $rel->destinationContentInfo->id );
+        }
+
+        return $relatedObjects;
+    }
+
+    /**
+     * Returns first image from related objects array.
+     *
+     * @param \eZ\Publish\Core\Repository\ContentService $contentService
+     * @param \eZ\Publish\API\Repository\Values\Content\Location $location
+     * @return \eZ\Publish\API\Repository\Values\Content\Content
+     */
+    public function getImageFromRelatedObjects( ContentService $contentService, Location $location )
+    {
+        $content = $contentService->loadContentByContentInfo( $location->getContentInfo() );
+
+        $relatedObjects = $this->getRelatedObjects(
+            $contentService,
+            $content
+        );
+
+        return reset( $relatedObjects );
     }
 
     /**

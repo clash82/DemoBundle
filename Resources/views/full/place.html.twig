@@ -7,17 +7,23 @@
         </div>
     </div>
     <div class="row">
-        {% if not ez_is_field_empty( content, 'image' ) %}
+        {% if ( relatedImage is empty ) and (ez_is_field_empty( content, 'image' )) %}
+            <div class="col-md-10">
+        {% else %}
             <div class="col-md-6">
-                {{ ez_render_field(
-                    content, 'image', { 'attr': { 'class': 'place-image' }, 'parameters': {'alias' : 'imageplacesize'} }
-                    )
-                }}
+                {% if not ez_is_field_empty( content, 'image' ) %}
+
+                    {# display assigned place image #}
+                    {{ ez_render_field( content, 'image', { 'attr': { 'class': 'place-image' }, 'parameters': {'alias' : 'imageplacesize'} } ) }}
+                {% else %}
+
+                    {# display related place image #}
+                    {{ ez_render_field( relatedImage, 'image', { 'attr': { 'class': 'place-image' }, 'parameters': {'alias' : 'imageplacesize'} } ) }}
+                {% endif %}
             </div>
             <div class="col-md-4">
-        {% else %}
-            <div class="col-md-10">
         {% endif %}
+
                 {{ ez_render_field(
                     content, 'location', { 'attr': { 'class': 'place-location' }, 'parameters':{ 'showInfo':false, 'width': '100%', 'zoom' : 16 } }
                     )

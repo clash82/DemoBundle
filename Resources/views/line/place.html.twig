@@ -21,25 +21,36 @@
     </div>
     
     <div class="row">
-        {% if ez_is_field_empty( content, 'image' ) %}
+        {% if ( relatedImage is empty ) and (ez_is_field_empty( content, 'image' )) %}
             <div class="col-md-12">
                 {{ ez_render_field( content, 'description' ) }}
             </div>
         {% else %}
             <div class="col-md-3">
                 <figure class="place-list-image">
-                    {{ ez_render_field( content, 'image', {
-                        "template": "eZDemoBundle:fields:ezimage_simple.html.twig",
-                        'attr': {'class': 'place-list-image' },
-                        'parameters': {'alias' : 'large'} } )
-                    }}
+                    {% if not ez_is_field_empty( content, 'image' ) %}
+
+                        {# display assigned place image #}
+                        {{ ez_render_field( content, 'image', {
+                            'template': 'eZDemoBundle:fields:ezimage_simple.html.twig',
+                            'attr': {'class': 'place-list-image' },
+                            'parameters': {'alias' : 'large'} } )
+                        }}
+                    {% else %}
+
+                        {# display related place image #}
+                        {{ ez_render_field( relatedImage, 'image', {
+                            'template': 'eZDemoBundle:fields:ezimage_simple.html.twig',
+                            'attr': {'class': 'place-list-image' },
+                            'parameters': {'alias' : 'large'} } )
+                        }}
+                    {% endif %}
                 </figure>
             </div>
             <div class="col-md-9">
                 {{ ez_render_field( content, 'description' ) }}
             </div>
         {% endif %}
-
     </div>
     <div class="row col-md-12">
         <a class="place-list-link" href="{{ path( 'ez_urlalias', {'locationId': content.contentInfo.mainLocationId} ) }}"> >> {{ 'more'|trans }}</a>

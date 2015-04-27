@@ -36,7 +36,29 @@ class PlaceController extends Controller
 
         return $this->render(
             'eZDemoBundle:parts/place:place_list.html.twig',
-            array( 'places' => $places )
+            array(
+                'places' => $places,
+            )
+        );
+    }
+
+    /**
+     * Displays place content.
+     *
+     * @param \eZ\Publish\API\Repository\Values\Content\Location $location
+     * @param string $viewType
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showPlaceAction( Location $location, $viewType )
+    {
+        $placeHelper = $this->get( 'ezdemo.place_helper' );
+        $contentService = $this->get( 'ezpublish.api.service.content' );
+
+        return $this->get( 'ez_content' )->viewLocation(
+            $location->id,
+            $viewType,
+            true,
+            [ 'relatedImage' => $placeHelper->getImageFromRelatedObjects( $contentService, $location ) ]
         );
     }
 
