@@ -12,9 +12,9 @@ env:
   - PROFILE="demo" TEST="clean"
 
 # test only master (+ Pull requests)
-branches:
-  only:
-    - master
+#branches:
+#  only:
+#    - master
 
 # Get ezpublish5 repo, and use it as the build dir
 before_install:
